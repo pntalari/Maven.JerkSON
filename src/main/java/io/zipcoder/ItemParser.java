@@ -18,32 +18,41 @@ public class ItemParser {
             "expiration" + delimiter + "(\\d{1,2}/\\d{1,2}/\\d{2,4})##";
 
     public ItemParser() {
-        List<Item> list = new ArrayList<>();
-        // Map<key, value> - should be in " "
-        // K:V - colon seperated
-        // KV, KV -
-        // (\\D+)(\\d)(\\wx)
     }
 
-    public List<Item> parseItemList(String valueToParse) {
+    public List<Item> parseItemList(String valueToParse) throws ItemParseException {
         List<Item> itemList = new ArrayList<>();
+        String[] arr = valueToParse.split("##");
 
-        return null;
+        for (int i = 0; i < arr.length; i++) {
+            try {
+                itemList.add(parseSingleItem(arr[i]+"##"));
+            } catch (ItemParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return itemList;
     }
 
     public Item parseSingleItem(String singleItem) throws ItemParseException {
-        Pattern thePattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = thePattern.matcher(singleItem);
+        Item item;
+        try {
 
-        matcher.find();
-        matcher.group(1);
-        matcher.group(2);
-        matcher.group(3);
-        matcher.group(4);
+            Pattern thePattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = thePattern.matcher(singleItem);
 
-        Item item = new Item(matcher.group(1).toLowerCase(), Double.parseDouble(matcher.group(2)),
-                matcher.group(3).toLowerCase(), matcher.group(4));
+            matcher.find();
+            matcher.group(1);
+            matcher.group(2);
+            matcher.group(3);
+            matcher.group(4);
 
+             item = new Item(matcher.group(1).toLowerCase(), Double.valueOf(matcher.group(2)),
+                    matcher.group(3).toLowerCase(), matcher.group(4));
+        }
+        catch (Exception e){
+            throw new ItemParseException();
+        }
         return item;
 
     }
