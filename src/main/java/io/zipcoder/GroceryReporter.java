@@ -31,7 +31,6 @@ public class GroceryReporter {
         Integer milkCnt = 0, breadCnt = 0, cookiesCnt = 0, applesCnt = 0;
         String strCookies = "cookies", strBread = "bread", strMilk = "milk", strApples = "apples";
 
-
         List<Item> list;
 
         try {
